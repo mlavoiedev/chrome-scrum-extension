@@ -5,23 +5,23 @@ console.log('ChromeScrumExtension::CALL STARTED, WE CAN INIT APP')
 const meetingID = document.querySelector("[data-unresolved-meeting-id]").getAttribute("data-unresolved-meeting-id");
 console.log(`ChromeScrumExtension::Meeting ID = ${meetingID}`);
 
+// Very basic to test buttons
+let isStarted = false;
+
 // Creating app (Simple test)
 const app = document.createElement('div');
 const button = document.createElement('button');
 button.innerText = 'Débuter le scrum';
 button.type = 'button';
 button.addEventListener('click', () => {
-    console.log('ChromeScrumExtension::Starting scrum');
-    // const textarea = document.querySelector('textarea');
-    // const button = document.querySelector('[jscontroller="VXdfxd"]');
-    // console.log(textarea);
-    // console.log(button);
-    // if (textarea && button) {
-    //     textarea.value = 'ChromeScrumExtension::Starting scrum';
-    //     textarea.onchange();
-        
-    //     button.click();
-    // }
+    isStarted = !isStarted;
+    if (isStarted) {
+        console.log('ChromeScrumExtension::Starting scrum');
+        button.innerText = '⏸️';
+    } else {
+        console.log('ChromeScrumExtension::Pausing scrum');
+        button.innerText = '▶️';
+    }
 })
 app.appendChild(button);
 app.id = 'chrome-scrum-extension';
