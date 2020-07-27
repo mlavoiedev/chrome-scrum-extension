@@ -1,2 +1,3 @@
 # chrome-scrum-extension
-Chrome scrum timer extension
+
+Google meet scrum timer extension.
