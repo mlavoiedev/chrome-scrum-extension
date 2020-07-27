@@ -1,21 +1,33 @@
+const log = (message) => {
+    console.log(`🕒 ChromeScrumExtension :: ${message}`);
+}   
+
+// This script is being injected when a Google Meet is started
+log('Meet Call started, initing app')
+
 const getUsers = () => {
     const  elements = document.querySelectorAll('[data-participant-id]');
     
     const users = Array.from(elements).map(element => {
-        const fullName = element.innerText.replace('You\n', '').split(' ');
-        return `${fullName[0]} ${fullName[1][0].toUpperCase()}`;
+        const innerText = element.innerText;
+
+        // Removing everything before new line
+        const string = innerText.substring(innerText.indexOf("\n") + 1);
+
+        // Formatting firstName and lastName
+        const fullName = string.split(' ');
+        const firstName = fullName[0];
+        const lastName = fullName[1] ? ` ${fullName[1][0].toUpperCase()}` : ''
+
+        return `${firstName}${lastName}`;
      });
 
-    console.log(`ChromeScrumExtension::Users = ${users}`);
+    log(`Users = ${users.join(', ')}`);
 }
-
-
-// This script is being injected when a Google Meet is started
-console.log('ChromeScrumExtension::CALL STARTED, WE CAN INIT APP')
 
 // If we ever want the call meeting id to establish a websocket between attendants
 const meetingID = document.querySelector("[data-unresolved-meeting-id]").getAttribute("data-unresolved-meeting-id");
-console.log(`ChromeScrumExtension::Meeting ID = ${meetingID}`);
+log(`Meeting ID = ${meetingID}`);
 
 // Very basic to test buttons
 let isStarted = false;
@@ -29,10 +41,10 @@ button.addEventListener('click', () => {
     getUsers();
     isStarted = !isStarted;
     if (isStarted) {
-        console.log('ChromeScrumExtension::Starting scrum');
+        log('Starting scrum');
         button.innerText = '⏸️';
     } else {
-        console.log('ChromeScrumExtension::Pausing scrum');
+        log('Pausing scrum');
         button.innerText = '▶️';
     }
 })
