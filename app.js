@@ -1,3 +1,15 @@
+const getUsers = () => {
+    const  elements = document.querySelectorAll('[data-participant-id]');
+    
+    const users = Array.from(elements).map(element => {
+        const fullName = element.innerText.replace('You\n', '').split(' ');
+        return `${fullName[0]} ${fullName[1][0].toUpperCase()}`;
+     });
+
+    console.log(`ChromeScrumExtension::Users = ${users}`);
+}
+
+
 // This script is being injected when a Google Meet is started
 console.log('ChromeScrumExtension::CALL STARTED, WE CAN INIT APP')
 
@@ -14,6 +26,7 @@ const button = document.createElement('button');
 button.innerText = 'Débuter le scrum';
 button.type = 'button';
 button.addEventListener('click', () => {
+    getUsers();
     isStarted = !isStarted;
     if (isStarted) {
         console.log('ChromeScrumExtension::Starting scrum');
