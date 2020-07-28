@@ -33,10 +33,6 @@ const getUsers = () => {
     };
   });
 
-  console.log(users);
-
-  log(`Users = ${users.join(", ")}`);
-
   return users;
 };
 
@@ -46,7 +42,7 @@ const meetingID = document
   .getAttribute("data-unresolved-meeting-id");
 log(`Meeting ID = ${meetingID}`);
 
-const createApp = () => {
+const createApp = (users) => {
   // Very basic to test buttons
   let isStarted = false;
 
@@ -75,7 +71,7 @@ const createApp = () => {
   playPauseButton.innerText = "▶️";
   playPauseButton.type = "button";
   playPauseButton.addEventListener("click", () => {
-    getUsers();
+    console.log(users);
     isStarted = !isStarted;
     if (isStarted) {
       onPlay();
@@ -108,9 +104,11 @@ const callback = (mutationsList, observer) => {
   for (let mutation of mutationsList) {
     const elements = document.querySelectorAll("[data-participant-id]");
     if (elements.length) {
-      log("Participant found, initializing extension");
       observer.disconnect();
-      createApp();
+
+      log("Participant found, initializing extension");
+      const users = getUsers();
+      createApp(users);
     }
   }
 };
