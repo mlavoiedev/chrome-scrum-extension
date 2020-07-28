@@ -6,9 +6,12 @@
     {
       "matches": ["*://meet.google.com/**-**-**"],
       "js": ["inject.js"]
-    } 
+    }
   ],
-  "web_accessible_resources": ["app.js", "app.css"],
+  "web_accessible_resources": [
+    "public/build/bundle.js",
+    "public/build/bundle.css"
+  ],
   "externally_connectable": {
     "matches": ["*://meet.google.com/**-**-**"]
   }

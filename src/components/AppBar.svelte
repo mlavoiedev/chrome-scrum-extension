@@ -1,0 +1,67 @@
+<script>
+    import CurrentUser from "./CurrentUser.svelte";
+    import Timer from "./Timer.svelte";
+    import Button from "./Button.svelte";
+
+    export let users;
+
+    let currentUserIndex = 0;
+
+    let isPlaying = false;
+
+    const onPlayButtonClick = () => {
+        isPlaying = !isPlaying;
+    }
+
+    const onNextButtonClick = () => {
+        currentUserIndex = (currentUserIndex + 1 >= users.length) ? 0 : currentUserIndex + 1;
+    }
+</script>
+
+<style>
+	.app-bar {
+        align-items: center;
+        background: white;
+        border-radius: 0 0 8px 8px;
+        display: flex;
+        height: 48px;
+        left: 50%;
+        overflow: hidden;
+        position: fixed;
+        top: 0;     
+        transform: translateX(-50%);
+        z-index: 1;
+    }
+
+    :global(#chrome-scrum-extension .app-bar > *) {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        position: relative;
+    }
+    
+    :global(#chrome-scrum-extension .app-bar > *:not(:first-child):before) {
+        background: #f1f3f4;
+        content: "";
+        height: 24px;
+        width: 1px;
+        position: absolute;
+        left: 0;
+    }
+</style>
+
+<div class="app-bar">
+    {#if users.length}
+        <Button on:clickEvent={onPlayButtonClick}>
+            {isPlaying ? '⏸️' : '▶️'} 
+        </Button>
+        <CurrentUser user={users[currentUserIndex]} />
+        <Timer />
+        <Button on:clickEvent={onNextButtonClick}>
+            ⏭️
+        </Button>
+    {:else}
+        <p>Pour débuter, ouvrir le panneau des participants</p>
+    {/if}
+</div>
