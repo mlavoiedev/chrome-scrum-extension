@@ -51,7 +51,7 @@ const createApp = (users) => {
 
   // Adding timer
   const timerDisplay = document.createElement("div");
-  timerDisplay.innerText = "[00:00]";
+  timerDisplay.innerText = `${users[0].name} 00:00`;
 
   // Creating nextButton
   const nextButton = document.createElement("button");

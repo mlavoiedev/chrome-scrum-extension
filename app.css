@@ -1,33 +1,49 @@
 #chrome-scrum-extension * {
-    font-family: 'Google Sans',Roboto,Arial,sans-serif;
-    font-size: 1.125rem;
-    font-weight: 400;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: black;
 }
 
 #chrome-scrum-extension {
-    position: fixed;
-    top: 0;
-    display: flex;
-    align-items: center;
-    border-radius: 0 0 8px 8px;
-    left: 50%;
-    overflow: hidden;
-    transform: translateX(-50%);
-    background: white;
-    z-index: 1;
+  align-items: center;
+  background: white;
+  border-radius: 0 0 8px 8px;
+  display: flex;
+  height: 48px;
+  left: 50%;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  transform: translateX(-50%);
+  z-index: 1;
 }
 
-#chrome-scrum-extension button, #chrome-scrum-extension > div {
-    color: black;
-    border: 0;
-    background: transparent;
-    padding: 12px 24px;
-    cursor: pointer;
-    overflow: hidden;
-    margin: 0;
-    
+#chrome-scrum-extension > * {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: relative;
+}
+
+#chrome-scrum-extension button {
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  margin: 0;
+  color: black;
 }
 
 #chrome-scrum-extension button:hover {
-    background-color: rgba(	0, 121, 107, 0.04);
+  background-color: rgba(0, 121, 107, 0.04);
+}
+
+#chrome-scrum-extension > *:not(:first-child):before {
+  background: #f1f3f4;
+  content: "";
+  height: 24px;
+  width: 1px;
+  position: absolute;
+  left: 0;
 }
