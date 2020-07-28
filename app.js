@@ -3,7 +3,7 @@ const log = (message) => {
 };
 
 // This script is being injected when a Google Meet is started
-log("Meet Call started, initing app");
+log("Meet Call started, initializing app");
 
 /**
  * This will get all users when Google Meet right pannel is opened
@@ -15,7 +15,9 @@ const getUsers = () => {
     const innerText = element.innerText;
 
     // Removing everything before new line
-    const string = innerText.substring(innerText.indexOf("\n") + 1).replace('You', '');
+    const string = innerText
+      .substring(innerText.indexOf("\n") + 1)
+      .replace("You", "");
 
     // Formatting firstName and lastName
     const fullName = string.split(" ");
@@ -25,10 +27,13 @@ const getUsers = () => {
     const image = element.querySelector("img");
 
     return {
+      id: element.getAttribute("data-participant-id"),
       name: `${firstName}${lastName}`,
-      iamgeUrl: image ? image.src : "",
+      imageURL: image ? image.src : "",
     };
   });
+
+  console.log(users);
 
   log(`Users = ${users.join(", ")}`);
 
@@ -41,47 +46,76 @@ const meetingID = document
   .getAttribute("data-unresolved-meeting-id");
 log(`Meeting ID = ${meetingID}`);
 
-// Very basic to test buttons
-let isStarted = false;
+const createApp = () => {
+  // Very basic to test buttons
+  let isStarted = false;
 
-// Creating app (Simple test)
-const app = document.createElement("div");
+  // Creating app (Simple test)
+  const app = document.createElement("div");
 
-const timerDisplay = document.createElement("div");
-timerDisplay.innerText = '[00:00]'
+  // Adding timer
+  const timerDisplay = document.createElement("div");
+  timerDisplay.innerText = "[00:00]";
 
-// Creating nextButton
-const nextButton = document.createElement("button");
-nextButton.type = "button";
-nextButton.innerText = "⏭️";
+  // Creating nextButton
+  const nextButton = document.createElement("button");
+  nextButton.type = "button";
+  nextButton.innerText = "⏭️";
 
-// Creating playPauseButton
-const playPauseButton = document.createElement("button");
-const onPlay = () => {
-  log("Starting scrum");
-  playPauseButton.innerText = "⏸️";
-};
-const onPause = () => {
-  log("Pausing scrum");
+  // Creating playPauseButton
+  const playPauseButton = document.createElement("button");
+  const onPlay = () => {
+    log("Starting scrum");
+    playPauseButton.innerText = "⏸️";
+  };
+  const onPause = () => {
+    log("Pausing scrum");
+    playPauseButton.innerText = "▶️";
+  };
   playPauseButton.innerText = "▶️";
+  playPauseButton.type = "button";
+  playPauseButton.addEventListener("click", () => {
+    getUsers();
+    isStarted = !isStarted;
+    if (isStarted) {
+      onPlay();
+    } else {
+      onPause();
+    }
+  });
+
+  // Appending app childs
+  app.appendChild(playPauseButton);
+  app.appendChild(timerDisplay);
+  app.appendChild(nextButton);
+  app.id = "chrome-scrum-extension";
+
+  // Appending app to current call
+  document.body.appendChild(app);
 };
-playPauseButton.innerText = "▶️";
-playPauseButton.type = "button";
-playPauseButton.addEventListener("click", () => {
-  getUsers();
-  isStarted = !isStarted;
-  if (isStarted) {
-    onPlay();
-  } else {
-    onPause();
+
+/**
+ * Using mutation observer to init app when participants are found
+ */
+
+// Select the node that will be observed for mutations
+const targetNode = document.body;
+// Options for the observer (which mutations to observe)
+const config = { childList: true, subtree: true };
+// Callback function to execute when mutations are observed
+const callback = (mutationsList, observer) => {
+  // Use traditional 'for loops' for IE 11
+  for (let mutation of mutationsList) {
+    const elements = document.querySelectorAll("[data-participant-id]");
+    if (elements.length) {
+      log("Participant found, initializing extension");
+      observer.disconnect();
+      createApp();
+    }
   }
-});
+};
 
-// Appending app childs
-app.appendChild(playPauseButton);
-app.appendChild(timerDisplay);
-app.appendChild(nextButton);
-app.id = "chrome-scrum-extension";
-
-// Appending app to current call
-document.body.appendChild(app);
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(callback);
+// Start observing the target node for configured mutations
+observer.observe(document.body, config);
