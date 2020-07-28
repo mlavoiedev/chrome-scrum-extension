@@ -1,6 +1,6 @@
 #chrome-scrum-extension * {
   font-family: "Google Sans", Roboto, Arial, sans-serif;
-  font-size: 1.125rem;
+  font-size: 0.8rem;
   font-weight: 400;
   color: black;
 }
@@ -46,4 +46,14 @@
   width: 1px;
   position: absolute;
   left: 0;
+}
+
+#chrome-scrum-extension .current-user p {
+    margin-left: 12px;
+}
+
+#chrome-scrum-extension .current-user img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
 }

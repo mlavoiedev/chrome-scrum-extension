@@ -45,18 +45,35 @@ log(`Meeting ID = ${meetingID}`);
 const createApp = (users) => {
   // Very basic to test buttons
   let isStarted = false;
+  let currentUserIndex = 0;
 
   // Creating app (Simple test)
   const app = document.createElement("div");
 
   // Adding timer
   const timerDisplay = document.createElement("div");
-  timerDisplay.innerText = `${users[0].name} 00:00`;
+  timerDisplay.innerText = `00:00`;
+
+  // Adding current user
+  const currentUser = document.createElement("div");
+  currentUser.classList.add('current-user');
+  const currentUserName = document.createElement("p");
+  const currentUserImage = document.createElement("img");
+  currentUserImage.src = users[currentUserIndex].imageURL;
+  currentUserName.innerText = users[currentUserIndex].name;
+  currentUser.appendChild(currentUserImage);
+  currentUser.appendChild(currentUserName);
+
 
   // Creating nextButton
   const nextButton = document.createElement("button");
   nextButton.type = "button";
   nextButton.innerText = "⏭️";
+  nextButton.addEventListener('click', () => {
+    currentUserIndex = currentUserIndex + 1 === users.length ? 0 : currentUserIndex + 1;
+    currentUserImage.src = users[currentUserIndex].imageURL;
+    currentUserName.innerText = users[currentUserIndex].name;
+  })
 
   // Creating playPauseButton
   const playPauseButton = document.createElement("button");
@@ -82,6 +99,7 @@ const createApp = (users) => {
 
   // Appending app childs
   app.appendChild(playPauseButton);
+  app.appendChild(currentUser);
   app.appendChild(timerDisplay);
   app.appendChild(nextButton);
   app.id = "chrome-scrum-extension";
@@ -99,21 +117,27 @@ const targetNode = document.body;
 // Options for the observer (which mutations to observe)
 const config = { childList: true, subtree: true };
 // Callback function to execute when mutations are observed
-const callback = (mutationsList, observer) => {
+const onMutation = (mutationsList, observer) => {
   // Use traditional 'for loops' for IE 11
-  for (let mutation of mutationsList) {
+  // for (let mutation of mutationsList) {
     const elements = document.querySelectorAll("[data-participant-id]");
     if (elements.length) {
       observer.disconnect();
 
-      log("Participant found, initializing extension");
-      const users = getUsers();
-      createApp(users);
+      // TODO : 
+      // replace setTimeout hack with something 
+      // like store.dispatch('addUser')
+      // when founding new user
+      setTimeout(() => {
+        log("Participant found, initializing extension");
+        const users = getUsers();
+        createApp(users);
+      }, 1000);
     }
-  }
+  // }
 };
 
 // Create an observer instance linked to the callback function
-const observer = new MutationObserver(callback);
+const observer = new MutationObserver(onMutation);
 // Start observing the target node for configured mutations
 observer.observe(document.body, config);

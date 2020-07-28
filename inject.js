@@ -25,13 +25,10 @@ const targetNode = document.body;
 const config = { childList: true, subtree: true };
 // Callback function to execute when mutations are observed
 const callback = (mutationsList, observer) => {
-  // Use traditional 'for loops' for IE 11
-  for (let mutation of mutationsList) {
-    const element = document.querySelector(".d7iDfe");
-    if (element !== null) {
-      injectScript(chrome.runtime.getURL("app.css"), "link", "head");
-      injectScript(chrome.runtime.getURL("app.js"), "script", "html");
-    }
+  const element = document.querySelector(".d7iDfe");
+  if (element !== null) {
+    injectScript(chrome.runtime.getURL("app.css"), "link", "head");
+    injectScript(chrome.runtime.getURL("app.js"), "script", "html");
   }
 };
 // Create an observer instance linked to the callback function
