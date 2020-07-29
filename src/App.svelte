@@ -28,8 +28,8 @@
     const targetNode = document.body;
     const config = { childList: true, subtree: true};
     const onMutation = (mutationsList, observer,) => {
-		const elements = document.querySelectorAll("[data-participant-id]");
-		if (elements.length) {
+		const participantElement = document.querySelector("[data-participant-id]");
+		if (participantElement) {
 		    observer.disconnect();
 
 		    // TODO : 
@@ -42,7 +42,6 @@
 				
 				const userElements = document.querySelectorAll("[data-participant-id]");
 				users = Array.from(userElements).map(node => getUserFromNode(node));
-		        
 		    }, 1000);
 		}
         
