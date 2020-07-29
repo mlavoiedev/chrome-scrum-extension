@@ -27,7 +27,7 @@
      */
     const targetNode = document.body;
     const config = { childList: true, subtree: true};
-    const onMutation = (mutationsList, observer,) => {
+    const onMutation = (mutationsList, observer) => {
 		const participantElement = document.querySelector("[data-participant-id]");
 		if (participantElement) {
 		    observer.disconnect();
