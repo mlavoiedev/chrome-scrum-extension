@@ -1,16 +1,20 @@
 <script>
+    import { createEventDispatcher } from 'svelte';
+
     import CurrentUser from "./CurrentUser.svelte";
     import Timer from "./Timer.svelte";
     import Button from "./Button.svelte";
 
     export let users;
+    export let isStarted;
 
     const OPEN_PANNEL_TEXT = 'Pour débuter, ouvrir le panneau des participants';
     const START_TEXT = 'Débuter le scrum';
 
     let currentUserIndex = 0;
-    let isStarted = false;
     let isPlaying = false;
+
+    const dispatch = createEventDispatcher();
 
     const onPlayButtonClick = () => {
         isPlaying = !isPlaying;
@@ -21,7 +25,7 @@
     }
 
     const onStartClick = () => {
-        isStarted = true;
+        dispatch('openModal');
     }
 </script>
 
