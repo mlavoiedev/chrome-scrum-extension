@@ -5,8 +5,11 @@
 
     export let users;
 
-    let currentUserIndex = 0;
+    const OPEN_PANNEL_TEXT = 'Pour débuter, ouvrir le panneau des participants';
+    const START_TEXT = 'Débuter le scrum';
 
+    let currentUserIndex = 0;
+    let isStarted = false;
     let isPlaying = false;
 
     const onPlayButtonClick = () => {
@@ -15,6 +18,10 @@
 
     const onNextButtonClick = () => {
         currentUserIndex = (currentUserIndex + 1 >= users.length) ? 0 : currentUserIndex + 1;
+    }
+
+    const onStartClick = () => {
+        isStarted = true;
     }
 </script>
 
@@ -26,6 +33,7 @@
         display: flex;
         height: 48px;
         left: 50%;
+        font-size: 0.7rem;
         overflow: hidden;
         position: fixed;
         top: 0;     
@@ -52,7 +60,7 @@
 </style>
 
 <div class="app-bar">
-    {#if users.length}
+    {#if isStarted && users.length}
         <Button on:clickEvent={onPlayButtonClick}>
             {isPlaying ? '⏸️' : '▶️'} 
         </Button>
@@ -61,7 +69,11 @@
         <Button on:clickEvent={onNextButtonClick}>
             ⏭️
         </Button>
+    {:else if (!isStarted && !users.length)}
+        <p>{OPEN_PANNEL_TEXT}</p>
     {:else}
-        <p>Pour débuter, ouvrir le panneau des participants</p>
+        <Button on:clickEvent={onStartClick}>
+            {START_TEXT}
+        </Button>
     {/if}
 </div>
