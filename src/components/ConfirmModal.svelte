@@ -21,6 +21,11 @@
     const onSearchUsersClick = () => {
         dispatch('searchUsersClick');
     }
+
+    const onRemoveUserClick = (user) => {
+        dispatch('removeUserClick', user);
+    }
+
 </script>
 
 <style>
@@ -95,7 +100,7 @@
         padding: 0 24px;
     }
 
-    .close-button {
+    .link-button {
         cursor: pointer;
         margin-left: auto;
         background-color: transparent;
@@ -108,14 +113,15 @@
 <div class="wrapper">
     <!-- <div class="backdrop" on:click={onBackdropClick}></div> -->
     <div class="inner">
-        <button class="close-button" type="button" on:click={onBackdropClick}>{CLOSE_BUTTON}</button>
+        <button class="link-button" type="button" on:click={onBackdropClick}>{CLOSE_BUTTON}</button>
         <h3>Liste des participants</h3>
         {#if users.length}
             <ul>
-                {#each users as { imageURL, name }}
+                {#each users as { imageURL, name, id }}
                     <li>
                         <img src={imageURL} alt="">
                         <p>{name}</p>
+                        <button class="link-button" type="button" on:click={() => onRemoveUserClick({id, imageURL})}>Retirer</button>
                     </li>
                 {/each}
             </ul>

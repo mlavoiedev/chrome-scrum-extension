@@ -32,14 +32,14 @@
 	.app-bar {
         align-items: center;
         background: white;
-        border-radius: 0 0 8px 8px;
+        border-radius: 8px;
         display: flex;
         height: 48px;
         left: 50%;
         font-size: 0.7rem;
         overflow: hidden;
         position: fixed;
-        top: 0;     
+        bottom: 100px;     
         transform: translateX(-50%);
         z-index: 8;
     }

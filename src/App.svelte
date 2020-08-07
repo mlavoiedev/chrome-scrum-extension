@@ -45,7 +45,7 @@
 	const removeUser = (user) => {
 		const userIndex = getUserIndex(user);
 
-		users =  users.splice(userIndex, 1);
+		users = users.filter(u => !areUsersEquals(u, user));
 	}
 </script>
 
@@ -57,5 +57,6 @@
 		on:backdropClick={onBackdropClick} 
 		on:confirmButtonClick={onConfirmButtonClick}
 		on:searchUsersClick={searchUsers}
+		on:removeUserClick={(event) => removeUser(event.detail)}
 	/>
 {/if}
