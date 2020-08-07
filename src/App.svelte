@@ -8,6 +8,7 @@
 	
 	let modalOpened = false;
 	let isStarted = false;
+	let isLoaded = true;
 
 	const onOpenModal = () => {
 		modalOpened = true;
@@ -47,16 +48,42 @@
 
 		users = users.filter(u => !areUsersEquals(u, user));
 	}
+
+	const watchForCallEnded = () => {
+		/**
+		 * Using mutation observer to close app when needed
+		 */
+		// Select the node that will be observed for mutations
+		const targetNode = document.body;
+		// Options for the observer (which mutations to observe)
+		const config = { childList: true, subtree: true };
+		// Create an observer instance linked to the callback function
+		const observer = new MutationObserver((mutationsList, observer) => {
+			const element = document.querySelector("[data-call-ended='true']");
+			if (element !== null) {
+				isLoaded = false;
+				observer.disconnect();
+			}
+		});
+		// Start observing the target node for configured mutations
+		observer.observe(document.body, config);
+	}
+
+	watchForCallEnded();
 </script>
 
-<AppBar users={users} isStarted={isStarted} on:openModal={onOpenModal} />
+{#if isLoaded}
+	<AppBar users={users} isStarted={isStarted} on:openModal={onOpenModal} />
 
-{#if modalOpened}
-	<ConfirmModal 
-		users={users} 
-		on:backdropClick={onBackdropClick} 
-		on:confirmButtonClick={onConfirmButtonClick}
-		on:searchUsersClick={searchUsers}
-		on:removeUserClick={(event) => removeUser(event.detail)}
-	/>
+	{#if modalOpened}
+		<ConfirmModal 
+			users={users} 
+			on:backdropClick={onBackdropClick} 
+			on:confirmButtonClick={onConfirmButtonClick}
+			on:searchUsersClick={searchUsers}
+			on:removeUserClick={(event) => removeUser(event.detail)}
+		/>
+	{/if}
 {/if}
+
+

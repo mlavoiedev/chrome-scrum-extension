@@ -48,6 +48,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+        overflow: auto;
         border-radius: 8px;
         position: relative;
         z-index: 0;
