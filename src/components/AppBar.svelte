@@ -8,7 +8,6 @@
     export let users;
     export let isStarted;
 
-    const OPEN_PANNEL_TEXT = 'Pour débuter, ouvrir le panneau des participants';
     const START_TEXT = 'Débuter le scrum';
 
     let currentUserIndex = 0;
@@ -42,7 +41,7 @@
         position: fixed;
         top: 0;     
         transform: translateX(-50%);
-        z-index: 1;
+        z-index: 8;
     }
 
     :global(#chrome-scrum-extension .app-bar > *) {
@@ -73,8 +72,6 @@
         <Button on:clickEvent={onNextButtonClick}>
             ⏭️
         </Button>
-    {:else if (!isStarted && !users.length)}
-        <p>{OPEN_PANNEL_TEXT}</p>
     {:else}
         <Button on:clickEvent={onStartClick}>
             {START_TEXT}
