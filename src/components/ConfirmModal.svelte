@@ -30,27 +30,27 @@
 
 <style>
     .wrapper {
-        position: fixed;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 400px;
-        height: 100vh;
-        z-index: 9;
         display: flex;
         flex-direction: column;
+        height: 60vh;
+        left: 50%;
+        position: fixed;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        z-index: 9;
     }
     .inner {
         background: var(--gm-background-color);
+        border-radius: 8px;
         box-shadow: 0px -1px 43px 1px rgba(0,0,0,0.75);
-        padding: 24px;
-        margin: auto;
         display: flex;
         flex-direction: column;
-        width: 100%;
+        margin: auto;
         overflow: auto;
-        border-radius: 8px;
+        padding: 24px;
         position: relative;
+        width: 100%;
         z-index: 0;
     }
     /* .backdrop {
@@ -62,17 +62,18 @@
     } */
     ul {
         list-style: none;
-        padding: 24px 0;
         margin: 0;
+        padding: 0 0 24px 0;
     }
     li {
+        align-items: center;
         display: flex;
         margin-top: 12px;
-        align-items: center;
     }
     img {
-        width: 48px;
-        height: 48px;
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
         border-radius: 50%;
         margin-right: 12px;
     }
@@ -80,9 +81,10 @@
     select {
         border: none;
         font-size: 16px;
+        margin-bottom: 24px;
     }
 
-    .round-button {
+    .button--round {
         margin: 24px auto 12px auto;
         border: 0;
         background: black;
@@ -101,36 +103,30 @@
         padding: 0 24px;
     }
 
-    .link-button {
+    .button--link {
         cursor: pointer;
         margin-left: auto;
         background-color: transparent;
         border: none;
     }
-    
+
+    .button--sticky {
+        bottom: 0;
+        position: sticky;
+        margin-top: auto;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+    }
 </style>
 
 
 <div class="wrapper">
     <!-- <div class="backdrop" on:click={onBackdropClick}></div> -->
     <div class="inner">
-        <button class="link-button" type="button" on:click={onBackdropClick}>{CLOSE_BUTTON}</button>
-        <h3>Liste des participants</h3>
-        {#if users.length}
-            <ul>
-                {#each users as { imageURL, name, id }}
-                    <li>
-                        <img src={imageURL} alt="">
-                        <p>{name}</p>
-                        <button class="link-button" type="button" on:click={() => onRemoveUserClick({id, imageURL})}>Retirer</button>
-                    </li>
-                {/each}
-            </ul>
-        {:else}
-            <p>{EMPTY_USERS_TEXT}</p>
-        {/if}
-
-        <button class="round-button" type="button" on:click={onSearchUsersClick}>{SEARCH_USERS_BUTTON}</button>
+        <button class="button--link" type="button" on:click={onBackdropClick}>{CLOSE_BUTTON}</button>
 
         {#if users.length}
             <h3>Temps à répartir</h3>
@@ -139,7 +135,30 @@
                 <option value="">15 minutes</option>
                 <option value="">20 minutes</option>
             </select>
-            <button class="round-button" type="button" on:click={onConfirmButtonClick}>{CONFIRM_BUTTON}</button>
+        {/if}
+        
+        <div class="section-header">
+            <h3>Liste des participants</h3>
+            {#if users.length}
+                <button class="button--link" type="button" on:click={onSearchUsersClick}>🔄</button>
+            {/if}
+        </div>
+        
+        {#if users.length}
+            <ul>
+                {#each users as { imageURL, name, id }}
+                    <li>
+                        <img src={imageURL} alt="">
+                        <p>{name}</p>
+                        <button class="button--link" type="button" on:click={() => onRemoveUserClick({id, imageURL})}>Retirer</button>
+                    </li>
+                {/each}
+            </ul>
+
+            <button class="button--round button--sticky" type="button" on:click={onConfirmButtonClick}>{CONFIRM_BUTTON}</button>
+        {:else}
+            <p>{EMPTY_USERS_TEXT}</p>
+            <button class="button--round" type="button" on:click={onSearchUsersClick}>{SEARCH_USERS_BUTTON}</button>
         {/if}
     </div>
 </div>

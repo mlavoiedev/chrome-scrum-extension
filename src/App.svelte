@@ -4,6 +4,9 @@
 
 	import { getUserFromNode } from './utils/getUserFromNode'; 
 
+	// Use mocks for debug
+	// import { mockUsers } from './mocks/users'; 
+
 	let users = [];
 	
 	let modalOpened = false;
